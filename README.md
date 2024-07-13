@@ -15,8 +15,11 @@
 
 - clone repository
 - Docker needs to be installed
-- after installation run this commands
-- docker pull redis:alpine
-- docker run --name laravel_redis -d -p 6379:6379 redis:alpine
+  - After installation, run these commands:
+    ```sh
+    docker pull redis:alpine
+    docker run --name laravel_redis -d -p 6379:6379 redis:alpine
+    ```
 - update Laravel env parameters
-- CACHE_DRIVER=redis
+  ```env
+  CACHE_DRIVER=redis
