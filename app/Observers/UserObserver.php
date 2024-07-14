@@ -48,6 +48,11 @@ class UserObserver
      */
     public function deleted(User $user): void
     {
-        //
+        // Removes previously cached user
+        $id = $user->id;
+        Cache::forget("user_{$id}");
+
+        \Log::info('Clear cache paginated users');
+        $this->userService->flushUserCachedPages();
     }
 }

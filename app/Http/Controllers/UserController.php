@@ -8,6 +8,7 @@ use App\Services\UserService;
 use App\Helpers\ResponseJsonHelper;
 use Illuminate\Support\Facades\Log;
 use App\Actions\User\CreateUserAction;
+use App\Actions\User\DeleteUserAction;
 use App\Actions\User\UpdateUserAction;
 use App\Http\Requests\UserFormRequest;
 use App\Actions\User\RetrieveUserAction;
@@ -74,12 +75,10 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Request $request)
+    public function destroy(Request $request, DeleteUserAction $action)
     {
         try {
-            $response = $this->userService->deleteUser($request->id);
-
-            return ResponseJsonHelper::success($response, 'Sucessfully deleted user!');
+            return $action->execute($request->id);
         } catch (\Throwable $th) {
             Log::error($th->getMessage());
             return ResponseJsonHelper::error($th->getMessage());
