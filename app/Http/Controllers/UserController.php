@@ -9,6 +9,7 @@ use App\Helpers\ResponseJsonHelper;
 use Illuminate\Support\Facades\Log;
 use App\Http\Requests\UserFormRequest;
 use App\Actions\User\RetrieveUserAction;
+use App\Actions\User\RetrieveUsersAction;
 
 class UserController extends Controller
 {
@@ -22,7 +23,7 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request, RetrieveUserAction $action)
+    public function index(Request $request, RetrieveUsersAction $action)
     {
         try {
             return $action->execute($request->all());
@@ -49,11 +50,9 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Request $request) {
+    public function show(Request $request, RetrieveUserAction $action) {
         try {
-            $user = $this->userService->getUserById($request->id);
-
-            return ResponseJsonHelper::success($user, 'Sucessfully retrieved user!');
+            return $action->execute($request->id);
         } catch (\Throwable $th) {
             Log::error($th->getMessage());
             return ResponseJsonHelper::error($th->getMessage());

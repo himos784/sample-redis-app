@@ -22,4 +22,4 @@
     ```
 - update Laravel env parameters
   ```env
-  CACHE_DRIVER=redis
+  CACHE_STORE=redis

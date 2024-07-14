@@ -18,11 +18,7 @@ class UserService
 
     public function getUsers(array $data)
     {
-        $users = $this->userRepository->getAll($data);
-        // return UserResource::collection($users);
-        return UserResource::collection($users)->additional(['message' => 'All users fetched successfully',]);
-        // return new UserCollection(User::paginate(200));
-        // return UserResource::collection(User::paginate(10));
+        return $this->userRepository->getAll($data);
     }
 
     public function createUser(array $data)
@@ -32,7 +28,7 @@ class UserService
 
     public function getUserById($id)
     {
-        return new UserResource($this->userRepository->findById($id));
+        return $this->userRepository->findById($id);
     }
 
     public function updateUser($id , array $data)
