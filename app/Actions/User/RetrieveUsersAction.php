@@ -24,13 +24,14 @@ class RetrieveUsersAction
         $pages = Cache::get('user_pages');
 
         // Checks new key is within cache or cache is empty
-        if(empty($pages) || !in_array($key, Cache::get('user_pages'))) {
+        if(empty($pages) || !in_array($key, $pages)) {
             $pages[] = $key;
             Cache::put('user_pages', $pages);
         }
 
         // Expires in 30mins
-        return Cache::remember($key, 1800, function () use($data) {
+        return Cache::remember($key, 1800, function () use($data, $key) {
+            \Log::info("Cached user page {$key}");
             return UserResource::collection($this->userService->getUsers($data))->additional(['message' => 'Users fetched successfully',]);
         });
     }

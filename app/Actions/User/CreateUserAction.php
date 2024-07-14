@@ -7,7 +7,7 @@ use App\Helpers\RedisHashHelper;
 use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Cache;
 
-class RetrieveUserAction
+class CreateUserAction
 {
     protected $userService;
 
@@ -16,10 +16,8 @@ class RetrieveUserAction
         $this->userService = $userService;
     }
 
-    public function execute($id): UserResource
+    public function execute(array $data): UserResource
     {
-        $user = $this->userService->getUserById($id);
-
-        return $this->userService->cacheUser($user);
+        return new UserResource($this->userService->createUser($data));
     }
 }

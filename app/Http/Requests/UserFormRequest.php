@@ -41,7 +41,7 @@ class UserFormRequest extends FormRequest
         if($isPutMethod) {
             $rules['email'][2] = $uniqueEmailRule->ignore(request()->id);
         }
-        \Log::info($rules);
+
         return $rules;
     }
 }
