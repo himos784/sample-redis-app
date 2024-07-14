@@ -4,6 +4,7 @@ namespace App\Observers;
 
 use App\Models\User;
 use App\Services\UserService;
+use Illuminate\Support\Facades\Cache;
 
 class UserObserver
 {
@@ -13,6 +14,7 @@ class UserObserver
     {
         $this->userService = $userService;
     }
+
     /**
      * Handle the User "created" event.
      */
@@ -30,28 +32,21 @@ class UserObserver
      */
     public function updated(User $user): void
     {
+        // Removes previously cached user
+        $id = $user->id;
+        Cache::forget("user_{$id}");
+
+        \Log::info('Caching updated user');
+        $this->userService->cachedUser($id);
+
+        \Log::info('Clear cache paginated users');
+        $this->userService->flushUserCachedPages();
     }
 
     /**
      * Handle the User "deleted" event.
      */
     public function deleted(User $user): void
-    {
-        //
-    }
-
-    /**
-     * Handle the User "restored" event.
-     */
-    public function restored(User $user): void
-    {
-        //
-    }
-
-    /**
-     * Handle the User "force deleted" event.
-     */
-    public function forceDeleted(User $user): void
     {
         //
     }

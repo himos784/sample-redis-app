@@ -8,6 +8,7 @@ use App\Services\UserService;
 use App\Helpers\ResponseJsonHelper;
 use Illuminate\Support\Facades\Log;
 use App\Actions\User\CreateUserAction;
+use App\Actions\User\UpdateUserAction;
 use App\Http\Requests\UserFormRequest;
 use App\Actions\User\RetrieveUserAction;
 use App\Actions\User\RetrieveUsersAction;
@@ -61,11 +62,9 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UserFormRequest $request) {
+    public function update(UserFormRequest $request, UpdateUserAction $action) {
         try {
-            $user = $this->userService->updateUser($request->id, $request->validated());
-
-            return ResponseJsonHelper::success($user, 'Sucessfully updated user!');
+            return $action->execute($request->id, $request->validated());
         } catch (\Throwable $th) {
             Log::error($th->getMessage());
             return ResponseJsonHelper::error($th->getMessage());
