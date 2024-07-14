@@ -18,8 +18,6 @@ class RetrieveUserAction
 
     public function execute($id): UserResource
     {
-        $user = $this->userService->getUserById($id);
-
-        return $this->userService->cacheUser($user);
+        return $this->userService->cachedUser($id);
     }
 }

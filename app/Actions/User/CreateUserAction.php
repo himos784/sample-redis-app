@@ -18,6 +18,9 @@ class CreateUserAction
 
     public function execute(array $data): UserResource
     {
-        return new UserResource($this->userService->createUser($data));
+        \Log::info('Create user');
+        $user = new UserResource($this->userService->createUser($data));
+
+        return $user->additional(['message' => 'User created successfully']);
     }
 }

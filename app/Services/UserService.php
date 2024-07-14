@@ -42,13 +42,13 @@ class UserService
         return $this->userRepository->delete($id);
     }
 
-    public function cacheUser(User $user, array $additonalData = ['message' => 'User fetched successfully'])
+    public function cachedUser($id, array $additonalData = ['message' => 'User fetched successfully'])
     {
-        $key = "user_{$user->id}";
+        $key = "user_{$id}";
 
         // Expires in 30mins
-        return Cache::remember($key, 1800, function () use($user, $additonalData) {
-            $user = new UserResource($user);
+        return Cache::remember($key, 1800, function () use($id, $additonalData) {
+            $user = new UserResource($this->getUserById($id));
             if(!empty($additonalData)) {
                 $user->additional($additonalData);
             }

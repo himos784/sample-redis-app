@@ -19,7 +19,7 @@ class UserObserver
     public function created(User $user): void
     {
         \Log::info('Caching created user');
-        $this->userService->cacheUser($user);
+        $this->userService->cachedUser($user->id);
 
         \Log::info('Clear cache paginated users');
         $this->userService->flushUserCachedPages();

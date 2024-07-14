@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Services\UserService;
 use App\Helpers\ResponseJsonHelper;
 use Illuminate\Support\Facades\Log;
+use App\Actions\User\CreateUserAction;
 use App\Http\Requests\UserFormRequest;
 use App\Actions\User\RetrieveUserAction;
 use App\Actions\User\RetrieveUsersAction;
@@ -36,11 +37,9 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(UserFormRequest $request) {
+    public function store(UserFormRequest $request, CreateUserAction $action) {
         try {
-            $user = $this->userService->createUser($request->validated());
-
-            return ResponseJsonHelper::created($user);
+            return $action->execute($request->validated());
         } catch (\Throwable $th) {
             Log::error($th->getMessage());
             return ResponseJsonHelper::error($th->getMessage());
